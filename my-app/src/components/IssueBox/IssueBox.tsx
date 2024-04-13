@@ -8,8 +8,8 @@ interface IssueBoxProps {
 interface Issues {
   summary: string;
   date: Date;
-  region: string[];
-  demographic: string[];
+  region?: string[];
+  demographic?: string[];
   popularity: number;
   severity: number;
 }
