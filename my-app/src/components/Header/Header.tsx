@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Header.module.css";
+import styles from "./Header.module.scss";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
