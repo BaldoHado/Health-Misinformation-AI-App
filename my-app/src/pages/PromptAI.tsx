@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const PromptAI = () => {
+const PromptAI: React.FC = () => {
   const [inputText, setInputText] = useState("");
 
   const handleInputChange = (event: any) => {
