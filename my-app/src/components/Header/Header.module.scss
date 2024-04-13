@@ -20,7 +20,7 @@ h1 {
   display: flex;
   justify-content: center;
   text-align: right;
-  padding: 10px 20px;
+  padding: 10px 0px;
 
   .navBtn {
     font-weight: 200;
@@ -41,7 +41,7 @@ a {
   letter-spacing: 0.15em;
 
   display: inline-block;
-  padding: 15px 20px;
+  padding: 0px 10px;
   position: relative;
 
   &::after {
