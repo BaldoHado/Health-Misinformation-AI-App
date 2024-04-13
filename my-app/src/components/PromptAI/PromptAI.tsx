@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import styles from "./PromptAI.module.scss";
 
 const PromptAI: React.FC = () => {
   const [inputText, setInputText] = useState("");
@@ -17,7 +18,7 @@ const PromptAI: React.FC = () => {
 
   return (
     <div>
-      <h1>Prompt AI</h1>
+      <h1 className={styles.title}>Prompt AI</h1>
       <form onSubmit={handleSubmit}>
         <img
           src="../public/images/emma-simpson-mNGaaLeWEp0-unsplash.jpg"
