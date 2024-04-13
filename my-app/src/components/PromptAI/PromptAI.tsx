@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import styles from "./PromptAI.module.scss";
 
 const PromptAI: React.FC = () => {
@@ -9,38 +8,35 @@ const PromptAI: React.FC = () => {
     setInputText(event.target.value);
   };
 
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-    // Here you can do something with the input text, such as sending it to an API or processing it.
-    console.log("Submitted text:", inputText);
-    setInputText(""); // Clear the input field after submitting
-  };
-
   return (
-    <div>
+    <div className={styles.container}>
       <h1 className={styles.title}>Prompt AI</h1>
-      <form onSubmit={handleSubmit}>
+      <div className={styles.imageGroups}>
         <img
-          src="../public/images/emma-simpson-mNGaaLeWEp0-unsplash.jpg"
+          src="/images/Carousel1.jpg"
           alt="Image 1"
+          className={styles.image}
         />
         <img
-          src="../public/images/piron-guillaume-U4FyCp3-KzY-unsplash.jpg"
+          src="/images/Carousel2.jpg"
           alt="Image 2"
+          className={styles.image}
         />
         <img
-          src="../public/images/sam-moghadam-khamseh-2rrsfMN4hn8-unsplash.jpg"
+          src="/images/Carousel3.jpg"
           alt="Image 3"
+          className={styles.image}
         />
+      </div>
+      <div className={styles.promptGen}>
         <input
           type="text"
           value={inputText}
           onChange={handleInputChange}
-          placeholder="Type something..."
+          placeholder="Add text..."
+          className={styles.inputField}
         />
-        <button type="submit">Submit</button>
-      </form>
-      <Link to="/">Return to Home</Link>
+      </div>
     </div>
   );
 };
