@@ -1,15 +1,16 @@
 import React from "react";
 import "./App.css";
 import Home from "./pages/Home";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Router } from "react-router-dom";
+import PromptAI from "./pages/PromptAI";
 
 function App() {
   return (
     <BrowserRouter>
-
-      <div className="App">
-        <Home />
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/prompt-ai" element={<PromptAI />} />
+      </Routes>
     </BrowserRouter>
   );
 }
