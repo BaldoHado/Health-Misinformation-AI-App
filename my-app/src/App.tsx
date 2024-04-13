@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import Home from "./pages/Home";
 import { BrowserRouter, Route, Routes, Router } from "react-router-dom";
-import PromptAI from "./pages/PromptAI";
+import PromptAI from "./pages/PromptAIPage";
 
 function App() {
   return (
