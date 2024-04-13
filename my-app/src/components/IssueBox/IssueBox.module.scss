@@ -1,0 +1,25 @@
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.box {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.summary {
+    font-weight: bold;
+}
+
+.lowerText {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 15px;
+}
+
