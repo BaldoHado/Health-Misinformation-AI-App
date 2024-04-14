@@ -27,14 +27,24 @@ const IssueBox = ({ issues }: IssueBoxProps) => {
 
   const handleVoteUp = (index: number) => {
     const updatedVotedUp = [...votedUp];
+    const updatedVotedDown = [...votedDown];
+
     updatedVotedUp[index] = !updatedVotedUp[index];
+    updatedVotedDown[index] = false;
+
     setVotedUp(updatedVotedUp);
+    setVotedDown(updatedVotedDown);
   };
 
   const handleVoteDown = (index: number) => {
     const updatedVotedDown = [...votedDown];
+    const updatedVotedUp = [...votedUp];
+
     updatedVotedDown[index] = !updatedVotedDown[index];
+    updatedVotedUp[index] = false;
+
     setVotedDown(updatedVotedDown);
+    setVotedUp(updatedVotedUp);
   };
 
   return (
@@ -46,15 +56,13 @@ const IssueBox = ({ issues }: IssueBoxProps) => {
           <div className={styles.voteIcons}>
             <ArrowUpwardIcon
               style={{
-                color: votedUp[index] ? "green" : "inherit",
-              }}
-              onClick={() => handleVoteUp(index)}
+                color: votedUp[index] ? "green" : "inherit",}}
+                onClick={() => handleVoteUp(index)}
             />
             <ArrowDownwardIcon
               style={{
-                color: votedDown[index] ? "red" : "inherit",
-              }}
-              onClick={() => handleVoteDown(index)}
+                color: votedDown[index] ? "red" : "inherit",}}
+                onClick={() => handleVoteDown(index)}
             />
           </div>
           <div className={styles.lowerText}>
