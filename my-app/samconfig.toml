@@ -1,0 +1,11 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "DxHubHackathon"
+resolve_s3 = true
+s3_prefix = "DxHubHackathon"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+parameter_overrides = "Env=\"main\" S3BucketName=\"surprise-static-site\" CognitoUserPoolName=\"surprise-userpool\" CognitoWebClientName=\"surprise-webclient\""
+image_repositories = []
