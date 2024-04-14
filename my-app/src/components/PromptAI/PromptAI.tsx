@@ -6,7 +6,19 @@ import PendingIcon from "@mui/icons-material/Pending";
 import EditIcon from "@mui/icons-material/Edit";
 import LinearProgress from "@mui/material/LinearProgress";
 
-const PromptAI: React.FC = () => {
+interface submitSchema {
+  summary: string;
+  date?: Date;
+  region?: string;
+  demographic?: string;
+  popularity?: number;
+  severity?: number;
+  generatedText: string;
+  status?: string;
+  votes?: number;
+}
+
+const PromptAI = () => {
   const [inputText, setInputText] = useState("");
   const [docType, setDocType] = useState<"tweet" | "pr">("tweet");
   const [data, setData] = useState<string>("");
@@ -34,9 +46,25 @@ const PromptAI: React.FC = () => {
   };
 
   const handleKeyDown = (event: any) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       event.preventDefault();
       fetchData();
+    }
+  };
+
+  const submitData = async (e: any) => {
+    e.preventDefault();
+    try {
+      const toSub: submitSchema = {
+        summary: inputText, 
+        generatedText: data,
+        votes: 120,
+      }
+      const response = await axios.post("/v1/issues", data);
+      console.log(response.data); // Handle success response
+    } catch (error) {
+      console.error("Error creating issue:", error);
+      // Handle error response
     }
   };
 
@@ -75,7 +103,7 @@ const PromptAI: React.FC = () => {
           )}
         </div>
         <div className={styles.generatedText}>
-          {isLoading && <LinearProgress color="error"/>}
+          {isLoading && <LinearProgress color="error" />}
           {!isLoading && data && (
             <div className={styles.genContainer}>
               <h3>Optimal AI-Generated Response</h3>
