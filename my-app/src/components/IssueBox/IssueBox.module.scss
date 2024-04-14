@@ -24,6 +24,66 @@
 .lowerText {
     display: flex;
     justify-content: space-around;
+    align-items: flex-end;
     padding-top: 15px;
+    height: 100%;
 }
 
+.voteIcons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 15px;
+    height: 100%;
+
+	& > * {
+		&:hover {
+			cursor: pointer;
+		}
+	}
+}
+
+.issueModal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 738px;
+    height: 768px;
+    background-color: white;
+    border-radius: 40px;
+}
+
+.modalHeader {
+    position: relative;
+    width: 100%;
+    height: 76px;
+    background-color: #6a4b4b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    h1 {
+        padding: 0;
+        margin: 0;
+        color: black;
+    }
+}
+
+.genText {
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+}
+
+.isApproved {
+	color: green;
+}
+
+.isRejected {
+	color: red;
+}

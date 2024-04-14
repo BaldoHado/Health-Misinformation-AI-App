@@ -32,7 +32,6 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 60px;
 }
 
 .inputField {
@@ -40,11 +39,24 @@ img {
   padding: 20px 30px;
   border-radius: 10px;
   border: none !important;
-  background-color: #D9D9D9;
+  background-color: #B39A9A;
   outline: none;
-  box-shadow: 0px 3px 3px 3px rgb(187, 183, 183);
+  box-shadow: 0px 3px 3px 3px #877272;
+  line-height: 24px;
+  font-weight: 300;
+  font-family: 'Poppins', sans-serif;
   transition: padding 0.3s ease;
-  &:focus{
+  color: #472727;
+
+  &::placeholder {
+    color: #472727;
+    line-height: 24px;
+    font-weight: 300;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  &:focus {
+    text-align: left;
     outline: none !important;
     padding: 20px 60px;
   }

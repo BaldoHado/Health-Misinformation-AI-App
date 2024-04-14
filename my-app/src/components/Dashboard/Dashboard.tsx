@@ -2,9 +2,6 @@ import React from "react";
 import styles from "./Dashboard.module.scss";
 import IssueBox from "../IssueBox/IssueBox";
 
-interface IssueBoxProps {
-  issues: Issues[];
-}
 
 interface Issues {
   summary: string;
@@ -13,179 +10,38 @@ interface Issues {
   demographic?: string[];
   popularity: number;
   severity: number;
+  generatedText: string;
 }
 
 const misinformationData: Issues[] = [
   {
-    summary: "Drink Bleach to Cure COVID",
-    date: new Date("2024-04-10"),
-    region: ["Online"],
+    summary: "COVID-19 vaccine causes infertility",
+    date: new Date("2023-03-25"),
+    region: ["North America", "Europe"],
+    demographic: ["Adults"],
+    popularity: 80,
+    severity: 90,
+    generatedText: "The COVID-19 vaccine has been thoroughly tested and is not linked to infertility. It is safe and effective in preventing severe illness."
+  },
+  {
+    summary: "5G networks spread COVID-19",
+    date: new Date("2023-04-10"),
+    region: ["Asia", "Africa"],
     demographic: ["General Public"],
-    popularity: 90,
-    severity: 9,
+    popularity: 60,
+    severity: 70,
+    generatedText: "There is no scientific evidence to support the claim that 5G networks spread COVID-19. Misinformation like this can cause unnecessary fear and confusion."
   },
   {
-    summary: "Lemon / Garlic Face Masks Treat Acne",
-    date: new Date("2024-04-11"),
-    region: ["Social Media Platforms"],
-    demographic: ["Young Adults"],
-    popularity: 95,
-    severity: 2,
-  },
-  {
-    summary: "5G Networks Cause Autism",
-    date: new Date("2024-04-12"),
-    region: ["Online Communities"],
-    demographic: ["Parents"],
-    popularity: 98,
-    severity: 6,
-  },
-  {
-    summary: "Drink Bleach to Cure COVID",
-    date: new Date("2024-04-10"),
-    region: ["Online"],
-    demographic: ["General Public"],
-    popularity: 90,
-    severity: 9,
-  },
-  {
-    summary: "Lemon / Garlic Face Masks Treat Acne",
-    date: new Date("2024-04-11"),
-    region: ["Social Media Platforms"],
-    demographic: ["Young Adults"],
-    popularity: 95,
-    severity: 2,
-  },
-  {
-    summary: "5G Networks Cause Autism",
-    date: new Date("2024-04-12"),
-    region: ["Online Communities"],
-    demographic: ["Parents"],
-    popularity: 98,
-    severity: 6,
-  },
-  {
-    summary: "Drink Bleach to Cure COVID",
-    date: new Date("2024-04-10"),
-    region: ["Online"],
-    demographic: ["General Public"],
-    popularity: 90,
-    severity: 9,
-  },
-  {
-    summary: "Lemon / Garlic Face Masks Treat Acne",
-    date: new Date("2024-04-11"),
-    region: ["Social Media Platforms"],
-    demographic: ["Young Adults"],
-    popularity: 95,
-    severity: 2,
-  },
-  {
-    summary: "5G Networks Cause Autism",
-    date: new Date("2024-04-12"),
-    region: ["Online Communities"],
-    demographic: ["Parents"],
-    popularity: 98,
-    severity: 6,
-  },
-  {
-    summary: "Drink Bleach to Cure COVID",
-    date: new Date("2024-04-10"),
-    region: ["Online"],
-    demographic: ["General Public"],
-    popularity: 90,
-    severity: 9,
-  },
-  {
-    summary: "Lemon / Garlic Face Masks Treat Acne",
-    date: new Date("2024-04-11"),
-    region: ["Social Media Platforms"],
-    demographic: ["Young Adults"],
-    popularity: 95,
-    severity: 2,
-  },
-  {
-    summary: "5G Networks Cause Autism",
-    date: new Date("2024-04-12"),
-    region: ["Online Communities"],
-    demographic: ["Parents"],
-    popularity: 98,
-    severity: 6,
-  },
-  {
-    summary: "Drink Bleach to Cure COVID",
-    date: new Date("2024-04-10"),
-    region: ["Online"],
-    demographic: ["General Public"],
-    popularity: 90,
-    severity: 9,
-  },
-  {
-    summary: "Lemon / Garlic Face Masks Treat Acne",
-    date: new Date("2024-04-11"),
-    region: ["Social Media Platforms"],
-    demographic: ["Young Adults"],
-    popularity: 95,
-    severity: 2,
-  },
-  {
-    summary: "5G Networks Cause Autism",
-    date: new Date("2024-04-12"),
-    region: ["Online Communities"],
-    demographic: ["Parents"],
-    popularity: 98,
-    severity: 6,
-  },
-  {
-    summary: "Drink Bleach to Cure COVID",
-    date: new Date("2024-04-10"),
-    region: ["Online"],
-    demographic: ["General Public"],
-    popularity: 90,
-    severity: 9,
-  },
-  {
-    summary: "Lemon / Garlic Face Masks Treat Acne",
-    date: new Date("2024-04-11"),
-    region: ["Social Media Platforms"],
-    demographic: ["Young Adults"],
-    popularity: 95,
-    severity: 2,
-  },
-  {
-    summary: "5G Networks Cause Autism",
-    date: new Date("2024-04-12"),
-    region: ["Online Communities"],
-    demographic: ["Parents"],
-    popularity: 98,
-    severity: 6,
-  },
-  {
-    summary: "Drink Bleach to Cure COVID",
-    date: new Date("2024-04-10"),
-    region: ["Online"],
-    demographic: ["General Public"],
-    popularity: 90,
-    severity: 9,
-  },
-  {
-    summary: "Lemon / Garlic Face Masks Treat Acne",
-    date: new Date("2024-04-11"),
-    region: ["Social Media Platforms"],
-    demographic: ["Young Adults"],
-    popularity: 95,
-    severity: 2,
-  },
-  {
-    summary: "5G Networks Cause Autism",
-    date: new Date("2024-04-12"),
-    region: ["Online Communities"],
-    demographic: ["Parents"],
-    popularity: 98,
-    severity: 6,
-  },
+    summary: "Herbal remedies cure COVID-19",
+    date: new Date("2023-05-05"),
+    region: ["South America"],
+    demographic: ["Elderly"],
+    popularity: 50,
+    severity: 80,
+    generatedText: "While herbal remedies may have some health benefits, they are not a cure for COVID-19. It's important to rely on scientifically proven treatments."
+  }
 ];
-
 const Dashboard = () => {
   return (
     <>
