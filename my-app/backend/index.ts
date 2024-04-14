@@ -1,16 +1,14 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import mongoose, { Schema, Document, Model } from "mongoose";
 import generateResponse from "./services/bedrock/response-gen";
 import cors from "cors";
 import generateSummarization from "./services/bedrock/summarization";
+import IssueModel from "./schemas/Issue";
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { createUser, findUserByEmail } from "./schemas/User";
 
-dotenv.config();
-
-const app: Express = express();
-const port = process.env.PORT || 8000;
-
-// Mongoose connection
 mongoose
   .connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
@@ -22,38 +20,10 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// TypeScript interface for Issue
-interface Issue extends Document {
-  summary: string;
-  date: Date;
-  region?: string[];
-  demographic?: string[];
-  popularity: number;
-  severity: number;
-  generatedText: string;
-  status: "Open" | "Closed" | "In Progress";
-  votes: number;
-}
+dotenv.config();
 
-// Mongoose schema for Issue
-const issueSchema: Schema = new Schema({
-  summary: { type: String, required: true },
-  date: { type: Date, default: Date.now },
-  region: [{ type: String }],
-  demographic: [{ type: String }],
-  popularity: { type: Number },
-  severity: { type: Number },
-  generatedText: { type: String, required: true },
-  status: {
-    type: String,
-    default: "Open",
-    enum: ["Open", "Closed", "In Progress"],
-  },
-  votes: { type: Number, default: 0 },
-});
-
-// Mongoose model for Issue
-const IssueModel: Model<Issue> = mongoose.model<Issue>("Issue", issueSchema);
+const app: Express = express();
+const port = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(cors());
@@ -180,6 +150,57 @@ app.post("/v1/issues/:id/vote", async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
+});
+
+app.post("/v1/auth/login", async (req, res) => {
+	const email = req.body.email;
+	const pass = req.body.pass;
+
+	try {
+		const user = await findUserByEmail(email);
+		if (!user) {
+			res.status(401).send("Hen not found.");
+		} else {
+			const currentUnixTimeInSeconds = Math.floor(Date.now() / 1000);
+			if (bcrypt.compareSync(pass, user.hash)) {
+				const token = jwt.sign(
+					{ userId: user._id, expiration: currentUnixTimeInSeconds + 3600 },
+					process.env.JWT_SECRET_KEY
+				);
+				res.send({ token: token });
+			} else {
+				res.status(403).send({ error: "wrong credentials" });
+			}
+		}
+	} catch (e) {
+		console.error(e);
+		res.status(401).send(e);
+	}
+});
+
+app.post("/auth/register", async (req, res) => {
+	try {
+		console.log(req.body);
+		const hen = await createUser(req.body.firstName, req.body.lastName, req.body.email, req.body.pass, req.body.tokenRegisteredWith);
+		res.status(201).send(hen);
+	} catch (e) {
+		console.error(e);
+		res.status(500).send("Failed to create hen");
+	}
+});
+
+app.get("/auth/check", async (req, res) => {
+	const token = req.headers.authorization.split(" ")[1];
+	try {
+		const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+		if (decoded.expiration < Math.floor(Date.now() / 1000)) {
+			res.status(401).send({ error: "token expired" });
+		} else {
+			res.status(200).send({ message: "token valid" });
+		}
+	} catch (e) {
+		res.status(401).send({ error: "invalid token" });
+	}
 });
 
 app.listen(port, () => {
