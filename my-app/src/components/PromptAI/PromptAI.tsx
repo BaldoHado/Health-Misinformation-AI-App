@@ -34,7 +34,7 @@ const PromptAI: React.FC = () => {
   };
 
   const handleKeyDown = (event: any) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       event.preventDefault();
       fetchData();
     }
@@ -75,7 +75,7 @@ const PromptAI: React.FC = () => {
           )}
         </div>
         <div className={styles.generatedText}>
-          {isLoading && <LinearProgress color="error"/>}
+          {isLoading && <LinearProgress color="error" />}
           {!isLoading && data && (
             <div className={styles.genContainer}>
               <h3>Optimal AI-Generated Response</h3>
