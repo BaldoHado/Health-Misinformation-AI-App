@@ -33,7 +33,7 @@ const PromptAI: React.FC = () => {
     fetchData();
   }, [inputText, docType]);
   return (
-    <>
+    <div className={styles.container}>
       <h1 className={styles.title}>Prompt AI</h1>
       <div className={styles.inputs}>
         <div className={styles.promptInput}>
@@ -64,7 +64,7 @@ const PromptAI: React.FC = () => {
         </FormControl>
         <h1>{data}</h1>
       </div>
-    </>
+    </div>
   );
 };
 

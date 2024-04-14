@@ -9,7 +9,7 @@ body {
   background-color: #fff6a2;
   display: flex;
   align-items: center;
-  border-bottom: 1px #aaa7a7 solid;
+  box-shadow: 0 4px 4px rgba(26,53,71,0.25), 0 0 0 1px rgba(26,53,71,0.07);
 }
 
 h1 {
@@ -20,15 +20,16 @@ h1 {
 .headerCenter {
   width: 100%;
   display: flex;
-  justify-content: center;
-  text-align: right;
+  justify-content: right;
+  align-items: center;
   padding: 10px 0px;
+  margin-right: 25px;
 
   .navBtn {
     font-weight: 200;
     color: #000000;
     font-size: 16px;
-    padding: 5px 50px;
+    padding: 5px 15px;
 
     &:hover {
       background-color: transparent;
