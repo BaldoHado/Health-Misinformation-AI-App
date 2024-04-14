@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
+import styles from "./AdminPortal.module.scss";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const AdminPortal: React.FC = () => {
   const [keys, setKeys] = useState<string[]>([]);
@@ -43,38 +45,42 @@ const AdminPortal: React.FC = () => {
 
   return (
     <div>
-      <div className="table-title">
+      <div className={styles.tabletitle}>
         <h3>Unique Generated Keys</h3>
       </div>
-      <table className="table-fill">
+      <table className={styles.tablefill}>
         <thead>
           <tr>
             <th className="text-left">Key</th>
-            <th className="text-left">Time Remaining</th>
+            <th className="text-center">Time Remaining</th>
+            <th className="text-center">Action</th>
           </tr>
         </thead>
         <tbody className="table-hover">
           {keys.map((key) => (
             <tr key={key}>
-              <td className="text-left">{key}</td>
-              <td className="text-left">
+              <td className={styles.textCenter}>{key}</td>
+              <td className={styles.textCenter}>
                 <Timer
                   expirationTime={12 * 60 * 60 * 1000}
                   onExpiration={() => handleKeyExpiration(key)}
                 />
               </td>
+              <td className={styles.textCenter}>
+                <button
+                  className={styles.textCenter}
+                  onClick={() => deleteKey(key)}
+                >
+                  <CancelIcon />
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button onClick={addKey}>Generate Key</button>
-      <ul>
-        {keys.map((key) => (
-          <li key={key}>
-            {key} <button onClick={() => deleteKey(key)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <button className={styles.textCenter} onClick={addKey}>
+        Generate Key
+      </button>
     </div>
   );
 };
