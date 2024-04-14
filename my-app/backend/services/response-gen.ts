@@ -20,7 +20,7 @@ function generatePrompt(misinformationText: string, responseMessageType: string)
     Present this evidence in form of a 240-259 word ${responseMessageType}.
         
         Assistant:`
-    } else if (responseMessageType == "press release") {
+    } else if (responseMessageType == "pr") {
         return `Human: 
         
         I'm a public official who finds evidence to dispute claims of misinformation. I receive a claim: ${misinformationText}. What evidence can I use to dispute this claim to the public?

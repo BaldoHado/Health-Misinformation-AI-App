@@ -21,6 +21,9 @@ app.get("/v1/generate", async (req: Request, res: Response) => {
     if (!text || !docType) {
       return res.status(400).json({ error: 'Text and doctype are required.' });
     }
+    if (docType != "tweet" && docType != "pr") {
+      return res.status(400).json({ error: 'DocType must be of type tweet or press release' });
+    }
 
     const response = await generateResponse(text as string, docType as string);
 

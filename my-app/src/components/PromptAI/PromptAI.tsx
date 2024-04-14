@@ -9,7 +9,6 @@ import LinearProgress from "@mui/material/LinearProgress";
 const PromptAI: React.FC = () => {
   const [inputText, setInputText] = useState("");
   const [docType, setDocType] = useState<"tweet" | "pr">("tweet");
-  const [source, setSource] = useState<string>("");
   const [data, setData] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -19,7 +18,7 @@ const PromptAI: React.FC = () => {
   };
 
   const fetchData = async () => {
-    if (inputText) {
+    if (inputText && docType) {
       try {
         setIsLoading(true);
         const response = await axios.get(
