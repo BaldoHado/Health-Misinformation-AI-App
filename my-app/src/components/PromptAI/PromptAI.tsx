@@ -24,6 +24,7 @@ const PromptAI = () => {
   const [data, setData] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const handleInputChange = (event: any) => {
     setInputText(event.target.value);
@@ -32,6 +33,7 @@ const PromptAI = () => {
   const fetchData = async () => {
     if (inputText && docType) {
       try {
+        setIsSubmitted(false)
         setIsLoading(true);
         const response = await axios.get(
           `http://localhost:8000/v1/generate?text=${inputText}&docType=${docType}`
@@ -56,15 +58,18 @@ const PromptAI = () => {
     e.preventDefault();
     try {
       const toSub: submitSchema = {
-        summary: inputText, 
+        summary: inputText,
         generatedText: data,
         votes: 120,
-      }
-      const response = await axios.post("/v1/issues", data);
-      console.log(response.data); // Handle success response
+      };
+      const response = await axios.post(
+        "http://localhost:8000/v1/issues",
+        toSub
+      );
+      console.log(response.data);
+      setIsSubmitted(true);
     } catch (error) {
       console.error("Error creating issue:", error);
-      // Handle error response
     }
   };
 
@@ -104,7 +109,7 @@ const PromptAI = () => {
         </div>
         <div className={styles.generatedText}>
           {isLoading && <LinearProgress color="error" />}
-          {!isLoading && data && (
+          {!isLoading && data && !isSubmitted && (
             <div className={styles.genContainer}>
               <h3>Optimal AI-Generated Response</h3>
               <div className={styles.genResponse}>
@@ -128,8 +133,15 @@ const PromptAI = () => {
                   onClick={() => setIsEditing(!isEditing)}
                 />
               </div>
-              <button className={styles.reviewBtn}>Submit For Review</button>
+              <button className={styles.reviewBtn} onClick={submitData}>
+                Submit For Review
+              </button>
             </div>
+          )}
+          {isSubmitted && (
+            <>
+              <h3>Submitted!</h3>
+            </>
           )}
         </div>
       </div>

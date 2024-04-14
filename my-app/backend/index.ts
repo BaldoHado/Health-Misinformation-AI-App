@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import mongoose, { Schema, Document, Model } from "mongoose";
-import generateResponse from './services/response-gen';
+import generateResponse from './services/bedrock/response-gen';
 import cors from "cors";
 import generateSummarization from "./services/bedrock/summarization";
 
