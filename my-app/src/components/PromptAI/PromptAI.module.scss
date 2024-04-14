@@ -1,7 +1,3 @@
-.container {
-  height: 100%;
-}
-
 .title {
   font-size: 32px;
   font-weight: 500;
@@ -9,34 +5,20 @@
   line-height: 24px;
   text-align: center;
 }
-
-h1 {
-  text-align: center;
-}
-
-.imageGroups {
+.inputs {
   display: flex;
   justify-content: center;
-  align-items: center;
-}
-
-
-img {
-  padding-left: 10px;
-  padding-right: 10px;
-  width: 30%;
-  border-radius: 5px;
-}
-
-.promptGen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  & > * {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }
 
 .inputField {
-  font-size: 26px;
-  padding: 20px 30px;
+  font-size: 18px;
+  padding: 20px 40px;
+  width: 25%;
   border-radius: 10px;
   border: none !important;
   background-color: #B39A9A;
@@ -60,4 +42,8 @@ img {
     outline: none !important;
     padding: 20px 60px;
   }
+}
+
+.docType {
+  height: 100%;
 }
