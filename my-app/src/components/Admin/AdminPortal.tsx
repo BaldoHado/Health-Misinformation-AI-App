@@ -4,7 +4,11 @@ const AdminPortal: React.FC = () => {
   const [keys, setKeys] = useState<string[]>([]);
 
   const generateKey = (): string => {
-    return Math.random().toString(36).substr(2, 9);
+    let newKey: string;
+    do {
+      newKey = Math.random().toString(36).substr(2, 9);
+    } while (keys.includes(newKey)); // Ensure the generated key is unique
+    return newKey;
   };
 
   const addKey = () => {
