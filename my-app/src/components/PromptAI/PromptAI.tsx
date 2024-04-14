@@ -33,6 +33,13 @@ const PromptAI: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (event: any) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      fetchData();
+    }
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Prompt AI</h1>
@@ -42,6 +49,7 @@ const PromptAI: React.FC = () => {
             type="text"
             value={inputText}
             onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
             placeholder="Known Misinformation Here..."
             className={styles.inputField}
           />
