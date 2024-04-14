@@ -13,12 +13,22 @@ function uuidv4() {
 
 function generatePrompt(misinformationText: string, responseMessageType: string) {
     // TODO: Make better
-    return `Human: The following text has been identified as misinformation: 
+    if (responseMessageType == "tweet") {
+        return `Human: 
         
-        ${misinformationText}
-
-        Please generate a ${responseMessageType} response to this misinformation. This response should state why the information is incorrect, citing sources where possible. It should then provide correct information on the topic, again citing sources where possible.
+    I'm a public official who finds evidence to dispute claims of misinformation. I receive a claim: ${misinformationText}. What evidence can I use to dispute this claim to the public?
+    Present this evidence in form of a 240-259 word ${responseMessageType}.
+        
         Assistant:`
+    } else if (responseMessageType == "press release") {
+        return `Human: 
+        
+        I'm a public official who finds evidence to dispute claims of misinformation. I receive a claim: ${misinformationText}. What evidence can I use to dispute this claim to the public?
+        Present this evidence in form of a professional-sounding 300-400 word ${responseMessageType}.
+            
+            Assistant:`
+    }
+    return ""
 }
 
 function getRAGResponse(prompt: string, model: string='anthropic.claude-v2'){
