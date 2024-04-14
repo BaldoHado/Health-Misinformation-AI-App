@@ -17,7 +17,7 @@ function generatePrompt(misinformationText: string, responseMessageType: string)
         return `Human: 
         
     I'm a public official who finds evidence to dispute claims of misinformation. I receive a claim: ${misinformationText}. What evidence can I use to dispute this claim to the public?
-    Present this evidence in form of a 240-259 word ${responseMessageType}.
+    Present this evidence in form of a 240-259 characters ${responseMessageType}.
         
         Assistant:`
     } else if (responseMessageType == "pr") {
