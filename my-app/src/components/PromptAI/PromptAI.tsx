@@ -22,6 +22,7 @@ const PromptAI = () => {
   const [inputText, setInputText] = useState("");
   const [docType, setDocType] = useState<"tweet" | "pr">("tweet");
   const [data, setData] = useState<string>("");
+  var [citations, setCitations] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -43,6 +44,13 @@ const PromptAI = () => {
           `${process.env.REACT_APP_API_URL}/summarize?misinformation=${inputText}`
         );
         setData(response.data.output.text);
+        const references = response.data["citations"][0]["retrievedReferences"];
+        var allCitations = "";
+        references.forEach(function (reference: { [x: string]: { [x: string]: any; }; }) {
+          allCitations += reference["content"]["text"];
+        });
+        setCitations(allCitations)
+
         setMisSummary(response2.data.summary);
         setIsLoading(false);
         console.log(response)
@@ -129,6 +137,14 @@ const PromptAI = () => {
                   {data}
                 </div>
               </div>
+              
+              <div className={styles.genContainer}>
+                <h3>Sources</h3>
+                <div className={styles.genResponse}>
+                  {citations}
+                </div>
+              </div>
+
               <div className={styles.editIcon}>
                 {isEditing && <p>Editing</p>}
                 <EditIcon
