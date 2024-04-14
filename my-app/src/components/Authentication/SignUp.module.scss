@@ -9,20 +9,25 @@
   background-color: #f2f2f2;
 }
 
-.signup-container {
-  width: 400px;
-  background-color: #fff;
+.signupcontainer {
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
-
-.signup-form {
+.centering {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.textnow {
+  display: flex;
+  flex-direction: column;
+}
+.signupform {
   display: flex;
   flex-direction: column;
 }
 
-.form-group {
+.formgroup {
   margin-bottom: 20px;
 }
 
