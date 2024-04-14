@@ -4,15 +4,17 @@ import { InvokeModelCommand, BedrockRuntimeClient, InvokeModelCommandOutput } fr
 const bedrockAgentClient = new BedrockAgentRuntimeClient({ region: process.env.AWS_REGION || 'us-east-1' });
 const bedrockClient = new BedrockRuntimeClient({ region: process.env.AWS_REGION || 'us-east-1' });
 
+
+
 function uuidv4() {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
       (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
     );
-  }
+  } 
   
 
-function generatePrompt(misinformationText: string, responseMessageType: string) {
-    // TODO: Make better
+ function generatePrompt(misinformationText: string, responseMessageType: string) {
+     // TODO: Make better
     return `Human: The following text has been identified as misinformation: 
         
         ${misinformationText}
