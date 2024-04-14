@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./IssueBox.module.scss";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -18,7 +18,7 @@ interface Issues {
   severity?: number;
   generatedText: string;
   status?: string;
-  votes?: number;
+  votes: number;
 }
 
 const IssueBox = ({ issues }: IssueBoxProps) => {
@@ -28,7 +28,16 @@ const IssueBox = ({ issues }: IssueBoxProps) => {
   const [votedDown, setVotedDown] = useState<boolean[]>(
     new Array(issues.length).fill(false)
   );
-  const handleVoteUp = async (index: number, id: string) => {
+
+  const [issueVotes, setIssueVotes] = useState<number[]>(
+    issues.map((issue) => issue.votes)
+  );
+
+  useEffect(() => {
+    setIssueVotes(issues.map((issue) => issue.votes));
+  }, [issues]);
+
+  const handleVoteUp = async (index: number, id: string, moveNum: boolean) => {
     const updatedVotedUp = [...votedUp];
     const updatedVotedDown = [...votedDown];
 
@@ -36,29 +45,57 @@ const IssueBox = ({ issues }: IssueBoxProps) => {
     updatedVotedDown[index] = false;
 
     try {
-      const response = await axios.post(
-        `http://localhost:8000/v1/issues/${id}/vote`,
-        true
-      );
-      console.log(response);
+      if (moveNum) {
+        const response = await axios.post(
+          `http://localhost:8000/v1/issues/${id}/vote?add=true`
+        );
+        console.log(response);
+        setIssueVotes((prevVotes) =>
+          prevVotes.map((votes, i) => (i === index ? votes + 1 : votes))
+        );
+      } else {
+        const response = await axios.post(
+          `http://localhost:8000/v1/issues/${id}/vote`
+        );
+        setIssueVotes((prevVotes) =>
+          prevVotes.map((votes, i) => (i === index ? votes - 1 : votes))
+        );
+      }
+
       setVotedUp(updatedVotedUp);
       setVotedDown(updatedVotedDown);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  const handleVoteDown = async (index: number, id: string) => {
+  const handleVoteDown = async (
+    index: number,
+    id: string,
+    moveNum: boolean
+  ) => {
     const updatedVotedDown = [...votedDown];
     const updatedVotedUp = [...votedUp];
 
     updatedVotedDown[index] = !updatedVotedDown[index];
     updatedVotedUp[index] = false;
     try {
-      const response = await axios.post(
-        `http://localhost:8000/v1/issues/${id}/vote`,
-        false
-      );
-      console.log(response);
+      if (moveNum) {
+        const response = await axios.post(
+          `http://localhost:8000/v1/issues/${id}/vote`
+        );
+        setIssueVotes((prevVotes) =>
+          prevVotes.map((votes, i) => (i === index ? votes - 1 : votes))
+        );
+        console.log(response);
+      } else {
+        const response = await axios.post(
+          `http://localhost:8000/v1/issues/${id}/vote?add=true`
+        );
+        setIssueVotes((prevVotes) =>
+          prevVotes.map((votes, i) => (i === index ? votes + 1 : votes))
+        );
+      }
+
       setVotedDown(updatedVotedDown);
       setVotedUp(updatedVotedUp);
     } catch (error) {
@@ -77,17 +114,25 @@ const IssueBox = ({ issues }: IssueBoxProps) => {
               style={{
                 color: votedUp[index] ? "green" : "inherit",
               }}
-              onClick={() => handleVoteUp(index, issue._id)}
+              onClick={
+                votedUp[index]
+                  ? () => handleVoteUp(index, issue._id, false)
+                  : () => handleVoteUp(index, issue._id, true)
+              }
             />
             <ArrowDownwardIcon
               style={{
                 color: votedDown[index] ? "red" : "inherit",
               }}
-              onClick={() => handleVoteDown(index, issue._id)}
+              onClick={
+                votedDown[index]
+                  ? () => handleVoteDown(index, issue._id, false)
+                  : () => handleVoteDown(index, issue._id, true)
+              }
             />
           </div>
           <div className={styles.lowerText}>
-            <div className={styles.date}>{issue.votes}</div>
+            <div className={styles.date}>{issueVotes[index]}</div>
             <div className={styles.severity}>Severity: {issue.severity}</div>
           </div>
         </div>

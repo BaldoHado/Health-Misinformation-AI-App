@@ -64,7 +64,7 @@ const PromptAI = () => {
       const toSub: submitSchema = {
         summary: misSummary,
         generatedText: data,
-        votes: 120,
+        votes: 0,
       };
       const response = await axios.post(
         "http://localhost:8000/v1/issues",

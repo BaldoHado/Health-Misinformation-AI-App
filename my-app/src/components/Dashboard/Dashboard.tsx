@@ -13,7 +13,7 @@ interface Issues {
   severity?: number;
   generatedText: string;
   status?: string;
-  votes?: number;
+  votes: number;
 }
 const Dashboard = () => {
   const [data, setData] = useState<Issues[]>([]);
@@ -24,7 +24,7 @@ const Dashboard = () => {
         _id: item._id,
         summary: item.summary,
         generatedText: item.generatedText,
-        votes: 0,
+        votes: item.votes,
       }));
 
       setData(mappedData);
