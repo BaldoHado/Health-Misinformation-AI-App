@@ -25,11 +25,16 @@ body {
   top: 16px;
   right: 15px;
   min-width: 35px;
-  background-color: transparent;
+  background-color: #9ea7af;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
+  border: none;
+}
+
+.sbutton:hover {
+  background-color: #797979;
 }
 
 .gbutton {
