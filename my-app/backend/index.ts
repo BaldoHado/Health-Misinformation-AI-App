@@ -13,8 +13,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get("/v1/generate", async (req: Request, res: Response) => {
-  const resp = await generateResponse("The moon is made of cheese", "twitter");
-  res.send(JSON.parse(new TextDecoder('utf-8').decode(resp.body))['completion']);
+  const resp = await generateResponse("Vaccines are ineffective", "twitter");
+  res.send(resp);
 });
 
 app.listen(port, () => {
