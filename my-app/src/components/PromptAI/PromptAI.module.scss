@@ -165,10 +165,10 @@
   border-radius: 5px;
   transition: 0.3s all ease;
 
-  & > p:focus,
-  p:focus-visible {
+  & > *:focus,
+  *:focus-visible,  {
     border: none !important;
-    outline: none;
+    outline: none !important;
   }
 }
 
