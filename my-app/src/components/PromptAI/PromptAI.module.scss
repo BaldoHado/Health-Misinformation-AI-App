@@ -30,11 +30,11 @@
   border-radius: 10px;
   padding: 20px 60px;
   padding-left: 20px;
-  padding-right: 20px;
+  padding-right: 210px;
   border: none !important;
   background-color: #ded563;
   outline: none;
-  min-width: 280px;
+  min-width: 300px;
   box-shadow: 0px 3px 3px 3px #8d9235;
   line-height: 24px;
   font-weight: 300;
@@ -53,7 +53,7 @@
     text-align: left;
     outline: none !important;
     padding-left: 20px;
-    padding-right: 20px;
+    padding-right: 210px;
     transition: all 0.3s ease;
   }
 }
@@ -62,21 +62,151 @@
   height: 100%;
 }
 
-.submitIcon {
+.submitButton {
   position: absolute;
-  top: 20px;
+  top: 16px;
   right: 15px;
+  height: 50%;
+  min-width: 35px;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  z-index: 100;
+}
 
+.submitIcon {
   &:hover {
-    cursor: pointer;
+    color: #a31111;
+    transition: all 0.3s ease;
+
   }
 }
 
 .generatedText {
-  width: 75%;
+  width: 500px;
+  margin-top: 50px;
 
   &>* {
     text-align: left;
   }
 
+}
+
+.dropdown {
+  position: absolute;
+  top: 15px;
+  right: 10%;
+  vertical-align: middle;
+}
+
+.dropdown select {
+  background-color: black;
+  color: white;
+  border: 2px black solid;
+  font-size: inherit;
+  padding: .5em;
+  border: 0;
+  margin: 0;
+  border-radius: 5px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  -webkit-appearance: button;
+}
+
+.dropdown::before,
+.dropdown::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.dropdown::after {
+  content: "\25BC";
+  height: 1em;
+  font-size: .625em;
+  line-height: 1;
+  right: 1.2em;
+  top: 50%;
+  margin-top: -.5em;
+}
+
+.dropdown::before {
+  width: 2em;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 0 3px 3px 0;
+}
+
+.dropdown select[disabled] {
+  color: rgba(0, 0, 0, .3);
+}
+
+.dropdown select[disabled]::after {
+  color: rgba(0, 0, 0, .1);
+}
+
+.dropdown::before {
+  background-color: rgba(0, 0, 0, .15);
+}
+
+.dropdown::after {
+  color: rgba(0, 0, 0, .4);
+}
+
+.genContainer {
+  position: relative;
+}
+
+.genResponse {
+  background-color: rgb(215, 215, 215);
+  padding: 20px;
+  line-height: 1.5;
+  border-radius: 5px;
+  transition: .3s all ease;
+
+  &>p:focus,
+  p:focus-visible {
+    border: none !important;
+    outline: none;
+  }
+}
+
+.editIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  &:hover {
+    color: rgb(92, 92, 203);
+    cursor: pointer;
+  }
+  & > p {
+    position: absolute;
+    top: -12px;
+    color: rgb(92, 92, 203); 
+    right: 30px;
+  }
+}
+
+.isEditing {
+  color: rgb(92, 92, 203);
+}
+
+.reviewBtn {
+  margin-top: 20px;
+  height: 35px;
+  width: 140px;
+  background-color: #ded563;
+  border: none;
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+    box-shadow: 2px 2px 0px 0px #8d9235;
+  }
 }

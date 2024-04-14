@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PromptAI.module.scss";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import axios from "axios";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import PendingIcon from '@mui/icons-material/Pending';
+import PendingIcon from "@mui/icons-material/Pending";
+import EditIcon from "@mui/icons-material/Edit";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const PromptAI: React.FC = () => {
   const [inputText, setInputText] = useState("");
   const [docType, setDocType] = useState<"tweet" | "pr">("tweet");
+  const [source, setSource] = useState<string>("");
   const [data, setData] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const handleInputChange = (event: any) => {
     setInputText(event.target.value);
@@ -23,6 +26,7 @@ const PromptAI: React.FC = () => {
           `http://localhost:8000/v1/generate?text=${inputText}&docType=${docType}`
         );
         setData(response.data.output.text);
+        console.log(response.data);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -42,34 +46,55 @@ const PromptAI: React.FC = () => {
             placeholder="Known Misinformation Here..."
             className={styles.inputField}
           />
-          {!isLoading ? <ArrowForwardIosIcon
-            className={styles.submitIcon}
-            onClick={fetchData}
-          /> : <PendingIcon className={styles.submitIcon}/>}
+          <span className={styles.dropdown}>
+            <select
+              value={docType}
+              onChange={(event) =>
+                setDocType(event.target.value as "tweet" | "pr")
+              }
+            >
+              <option value="tweet">Tweet</option>
+              <option value="pr">Press Release</option>
+            </select>
+          </span>
+          {!isLoading ? (
+            <button onClick={fetchData} className={styles.submitButton}>
+              <ArrowForwardIosIcon className={styles.submitIcon} />
+            </button>
+          ) : (
+            <button onClick={fetchData} className={styles.submitButton}>
+              <PendingIcon className={styles.submitIcon} />
+            </button>
+          )}
         </div>
-
-        {/* <FormControl sx={{ minWidth: 200 }}>
-          <InputLabel id="selectDocLabel">Select Document Type</InputLabel>
-          <Select
-            value={docType}
-            label="Select Document Type"
-            labelId="selectDocLabel"
-            id="selectDoc"
-            onChange={(event: any) => setDocType(event.target.value)}
-            placeholder="Select Document Type"
-            className={styles.docType}
-          >
-            <MenuItem value="tweet">Tweet</MenuItem>
-            <MenuItem value="pr">Press Release</MenuItem>
-          </Select>
-        </FormControl> */}
         <div className={styles.generatedText}>
-          {isLoading && <p> Loading</p>}
+          {isLoading && <LinearProgress color="error"/>}
           {!isLoading && data && (
-            <>
+            <div className={styles.genContainer}>
               <h3>Optimal AI-Generated Response</h3>
-              <p>{data}</p>
-            </>
+              <div className={styles.genResponse}>
+                <div
+                  onBlur={(event) =>
+                    event.currentTarget.textContent
+                      ? setData(event.currentTarget.textContent)
+                      : ""
+                  }
+                  contentEditable={isEditing}
+                >
+                  {data}
+                </div>
+              </div>
+              <div className={styles.editIcon}>
+                {isEditing && <p>Editing</p>}
+                <EditIcon
+                  className={`${styles.editIcon} ${
+                    isEditing && styles.isEditing
+                  }`}
+                  onClick={() => setIsEditing(!isEditing)}
+                />
+              </div>
+              <button className={styles.reviewBtn}>Submit For Review</button>
+            </div>
           )}
         </div>
       </div>
