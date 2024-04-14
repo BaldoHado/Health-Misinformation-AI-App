@@ -166,7 +166,7 @@
   transition: 0.3s all ease;
 
   & > *:focus,
-  *:focus-visible,  {
+  *:focus-visible {
     border: none !important;
     outline: none !important;
   }
