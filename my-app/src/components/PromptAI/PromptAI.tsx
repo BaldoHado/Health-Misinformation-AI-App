@@ -6,17 +6,16 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const PromptAI: React.FC = () => {
   const [inputText, setInputText] = useState("");
-  const [docType, setDocType] = useState<"tweet" | "pr" | "Document Type">(
-    "Document Type"
-  );
+  const [docType, setDocType] = useState<"tweet" | "pr">("tweet");
   const [data, setData] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleInputChange = (event: any) => {
     setInputText(event.target.value);
   };
 
   const fetchData = async () => {
-    if (inputText && docType) {
+    if (inputText) {
       try {
         const response = await axios.get(
           `http://localhost:8000/v1/generate?text=${inputText}&docType=${docType}`
@@ -29,14 +28,11 @@ const PromptAI: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [inputText, docType]);
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Prompt AI</h1>
       <div className={styles.inputs}>
-        <div className={styles.promptInput}>
+        <div className={styles.inputContainer}>
           <input
             type="text"
             value={inputText}
@@ -44,10 +40,14 @@ const PromptAI: React.FC = () => {
             placeholder="Known Misinformation Here..."
             className={styles.inputField}
           />
-          <ArrowForwardIosIcon className={styles.submitIcon} />
+          <ArrowForwardIosIcon
+            className={styles.submitIcon}
+            onClick={fetchData}
+          />
+          {/* onClick={fetchData} */}
         </div>
 
-        <FormControl sx={{ minWidth: 200 }}>
+        {/* <FormControl sx={{ minWidth: 200 }}>
           <InputLabel id="selectDocLabel">Select Document Type</InputLabel>
           <Select
             value={docType}
@@ -61,8 +61,8 @@ const PromptAI: React.FC = () => {
             <MenuItem value="tweet">Tweet</MenuItem>
             <MenuItem value="pr">Press Release</MenuItem>
           </Select>
-        </FormControl>
-        <h1>{data}</h1>
+        </FormControl> */}
+        <p>{data}</p>
       </div>
     </div>
   );
