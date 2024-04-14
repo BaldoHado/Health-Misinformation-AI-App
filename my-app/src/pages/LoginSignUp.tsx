@@ -1,101 +1,77 @@
-import React, { useState, useEffect } from "react";
-import "./App.css";
-import { Amplify } from "aws-amplify";
-import { awsExports } from "./aws-exports";
-import { Authenticator } from "@aws-amplify/ui-react";
-import "@aws-amplify/ui-react/styles.css";
-import { Auth } from "aws-amplify";
+import { signUp } from "aws-amplify/auth";
+import { confirmSignUp, type ConfirmSignUpInput } from "aws-amplify/auth";
+import { autoSignIn } from "aws-amplify/auth";
+import { signIn, type SignInInput } from "aws-amplify/auth";
+import { signOut } from "aws-amplify/auth";
 
-// Configure AWS Amplify
-Amplify.configure({
-  Auth: {
-    region: awsExports.REGION,
-    userPoolId: awsExports.USER_POOL_ID,
-    userPoolWebClientId: awsExports.USER_POOL_APP_CLIENT_ID,
-  },
-});
+type SignUpParameters = {
+  username: string;
+  password: string;
+  email: string;
+  phone_number: string;
+};
 
-function App(): JSX.Element {
-  const [jwtToken, setJwtToken] = useState<string>("");
+async function handleSignUp({
+  username,
+  password,
+  email,
+  phone_number,
+}: SignUpParameters) {
+  try {
+    const { isSignUpComplete, userId, nextStep } = await signUp({
+      username,
+      password,
+      options: {
+        userAttributes: {
+          email,
+          phone_number, // E.164 number convention
+        },
+        // optional
+        autoSignIn: true, // or SignInOptions e.g { authFlowType: "USER_SRP_AUTH" }
+      },
+    });
 
-  useEffect(() => {
-    fetchJwtToken();
-  }, []);
+    console.log(userId);
+  } catch (error) {
+    console.log("error signing up:", error);
+  }
 
-  const fetchJwtToken = async (): Promise<void> => {
+  async function handleSignUpConfirmation({
+    username,
+    confirmationCode,
+  }: ConfirmSignUpInput) {
     try {
-      const session = await Auth.currentSession();
-      const token = session.getIdToken().getJwtToken();
-      setJwtToken(token);
+      const { isSignUpComplete, nextStep } = await confirmSignUp({
+        username,
+        confirmationCode,
+      });
     } catch (error) {
-      console.log("Error fetching JWT token:", error);
+      console.log("error confirming sign up", error);
     }
-  };
+  }
 
-  return (
-    <Authenticator
-      initialState="signIn"
-      components={{
-        SignUp: {
-          FormFields: () => (
-            <>
-              <Authenticator.SignUp.FormFields />
+  async function handleAutoSignIn() {
+    try {
+      const signInOutput = await autoSignIn();
+      // handle sign-in steps
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-              {/* Custom fields for given_name and family_name */}
-              <div>
-                <label>First name</label>
-              </div>
-              <input
-                type="text"
-                name="given_name"
-                placeholder="Please enter your first name"
-              />
-              <div>
-                <label>Last name</label>
-              </div>
-              <input
-                type="text"
-                name="family_name"
-                placeholder="Please enter your last name"
-              />
-              <div>
-                <label>Email</label>
-              </div>
-              <input
-                type="text"
-                name="email"
-                placeholder="Please enter a valid email"
-              />
-            </>
-          ),
-        },
-      }}
-      services={{
-        validateCustomSignUp: async (formData: { [key: string]: string }) => {
-          const errors: { [key: string]: string } = {};
-          if (!formData.given_name) {
-            errors.given_name = "First Name is required";
-          }
-          if (!formData.family_name) {
-            errors.family_name = "Last Name is required";
-          }
-          if (!formData.email) {
-            errors.email = "Email is required";
-          }
-          return errors;
-        },
-      }}
-    >
-      {({ signOut, user }) => (
-        <div>
-          Welcome {user?.username}
-          <button onClick={signOut}>Sign out</button>
-          <h4>Your JWT token:</h4>
-          {jwtToken}
-        </div>
-      )}
-    </Authenticator>
-  );
+  async function handleSignIn({ username, password }: SignInInput) {
+    try {
+      const { isSignedIn, nextStep } = await signIn({ username, password });
+    } catch (error) {
+      console.log("error signing in", error);
+    }
+  }
+
+  async function handleSignOut() {
+    try {
+      await signOut();
+    } catch (error) {
+      console.log("error signing out: ", error);
+    }
+  }
 }
-
-export default App;
