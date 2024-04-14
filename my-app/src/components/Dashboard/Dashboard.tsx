@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [data, setData] = useState<Issues[]>([]);
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/v1/issues`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/issues`);
       const mappedData: Issues[] = response.data.map((item: any) => ({
         _id: item._id,
         summary: item.summary,

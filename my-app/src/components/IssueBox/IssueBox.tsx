@@ -47,7 +47,7 @@ const IssueBox = ({ issues }: IssueBoxProps) => {
     try {
       if (moveNum) {
         const response = await axios.post(
-          `http://localhost:8000/v1/issues/${id}/vote?add=true`
+          `${process.env.REACT_APP_API_URL}/issues/${id}/vote?add=true`
         );
         console.log(response);
         setIssueVotes((prevVotes) =>
@@ -55,7 +55,7 @@ const IssueBox = ({ issues }: IssueBoxProps) => {
         );
       } else {
         const response = await axios.post(
-          `http://localhost:8000/v1/issues/${id}/vote`
+          `${process.env.REACT_APP_API_URL}/issues/${id}/vote`
         );
         setIssueVotes((prevVotes) =>
           prevVotes.map((votes, i) => (i === index ? votes - 1 : votes))
@@ -81,7 +81,7 @@ const IssueBox = ({ issues }: IssueBoxProps) => {
     try {
       if (moveNum) {
         const response = await axios.post(
-          `http://localhost:8000/v1/issues/${id}/vote`
+          `${process.env.REACT_APP_API_URL}/issues/${id}/vote`
         );
         setIssueVotes((prevVotes) =>
           prevVotes.map((votes, i) => (i === index ? votes - 1 : votes))
@@ -89,7 +89,7 @@ const IssueBox = ({ issues }: IssueBoxProps) => {
         console.log(response);
       } else {
         const response = await axios.post(
-          `http://localhost:8000/v1/issues/${id}/vote?add=true`
+          `${process.env.REACT_APP_API_URL}/issues/${id}/vote?add=true`
         );
         setIssueVotes((prevVotes) =>
           prevVotes.map((votes, i) => (i === index ? votes + 1 : votes))

@@ -37,10 +37,10 @@ const PromptAI = () => {
         setIsSubmitted(false);
         setIsLoading(true);
         const response = await axios.get(
-          `http://localhost:8000/v1/generate?text=${inputText}&docType=${docType}`
+          `${process.env.REACT_APP_API_URL}/generate?text=${inputText}&docType=${docType}`
         );
         const response2 = await axios.get(
-          `http://localhost:8000/v1/summarize?misinformation=${inputText}`
+          `${process.env.REACT_APP_API_URL}/summarize?misinformation=${inputText}`
         );
         setData(response.data.output.text);
         setMisSummary(response2.data.summary);
@@ -67,7 +67,7 @@ const PromptAI = () => {
         votes: 0,
       };
       const response = await axios.post(
-        "http://localhost:8000/v1/issues",
+        `${process.env.REACT_APP_API_URL}/issues`,
         toSub
       );
       console.log(response.data);
