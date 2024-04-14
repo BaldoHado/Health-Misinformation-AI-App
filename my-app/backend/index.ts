@@ -11,6 +11,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import mongoose, { Schema, Document, Model } from "mongoose";
 import cors from "cors";
+import generateSummarization from "./services/bedrock/summarization";
 
 dotenv.config();
 
@@ -143,6 +144,16 @@ app.post("/v1/issues/:id/vote", async (req: Request, res: Response) => {
     } else {
       res.status(404).send("Issue not found");
     }
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/v1/summarize", async (req: Request, res: Response) => {
+  try {
+    const misinfo = req.query.misinformation;
+    const resp = await generateSummarization(misinfo as string);
+    res.send({"summary": resp});
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
