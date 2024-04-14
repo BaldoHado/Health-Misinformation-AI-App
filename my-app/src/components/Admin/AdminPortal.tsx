@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 const AdminPortal: React.FC = () => {
   const [keys, setKeys] = useState<string[]>([]);
@@ -17,13 +17,20 @@ const AdminPortal: React.FC = () => {
     setKeys(updatedKeys);
   };
 
+  const handleKeyExpiration = useCallback(
+    (expiredKey: string) => {
+      deleteKey(expiredKey);
+    },
+    [keys]
+  );
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setKeys((prevKeys) => {
         // Filter out keys that are older than 12 hours
         return prevKeys.filter((key) => {
-          const keyCreationTime = parseInt(key.substring(0, 10), 36) * 1000; // Convert the first 10 characters of the key to a timestamp
-          return Date.now() - keyCreationTime < 12 * 60 * 60 * 1000; // Check if the key is younger than 12 hours
+          const keyCreationTime = parseInt(key.substring(0, 10), 36) * 1000;
+          return Date.now() - keyCreationTime < 12 * 60 * 60 * 1000;
         });
       });
     }, 1000); // Check every second
@@ -47,7 +54,10 @@ const AdminPortal: React.FC = () => {
             <tr key={key}>
               <td className="text-left">{key}</td>
               <td className="text-left">
-                <Timer expirationTime={12 * 60 * 60 * 1000} />
+                <Timer
+                  expirationTime={12 * 60 * 60 * 1000}
+                  onExpiration={() => handleKeyExpiration(key)}
+                />
               </td>
             </tr>
           ))}
@@ -66,18 +76,26 @@ const AdminPortal: React.FC = () => {
 };
 
 interface TimerProps {
-  expirationTime: number; // Expiration time in milliseconds
+  expirationTime: number;
+  onExpiration: () => void; // Callback function to handle expiration
 }
 
-const Timer: React.FC<TimerProps> = ({ expirationTime }) => {
+const Timer: React.FC<TimerProps> = ({ expirationTime, onExpiration }) => {
   const [timeRemaining, setTimeRemaining] = useState(expirationTime);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeRemaining((prevTime) => prevTime - 1000);
+      setTimeRemaining((prevTime) => {
+        const newTime = prevTime - 1000;
+        if (newTime <= 0) {
+          clearInterval(timer);
+          onExpiration(); // Call the callback function when time expires
+        }
+        return newTime;
+      });
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [onExpiration]);
 
   const formatTime = (time: number): string => {
     const hours = Math.floor(time / (60 * 60 * 1000));
