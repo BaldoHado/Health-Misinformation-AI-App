@@ -1,8 +1,6 @@
-import {BedrockAgentRuntimeClient, RetrieveAndGenerateCommand, RetrieveAndGenerateCommandInput, RetrieveCommand, RetrieveCommandInput} from "@aws-sdk/client-bedrock-agent-runtime"
-import { InvokeModelCommand, BedrockRuntimeClient, InvokeModelCommandOutput } from '@aws-sdk/client-bedrock-runtime';
+import {RetrieveAndGenerateCommand, RetrieveAndGenerateCommandInput} from "@aws-sdk/client-bedrock-agent-runtime"
+import { bedrockAgentClient } from './bedrock-funs';
 
-const bedrockAgentClient = new BedrockAgentRuntimeClient({ region: process.env.AWS_REGION || 'us-east-1' });
-const bedrockClient = new BedrockRuntimeClient({ region: process.env.AWS_REGION || 'us-east-1' });
 
 function uuidv4() {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
@@ -46,36 +44,6 @@ function getRAGResponse(prompt: string, model: string='anthropic.claude-v2'){
     }
     const command = new RetrieveAndGenerateCommand(params as RetrieveAndGenerateCommandInput);
     return bedrockAgentClient.send(command);
-}
-
-function getKBResponse(prompt: string){
-    const params = {
-        knowledgeBaseId: "4ILEEBPEKT",
-        retrievalQuery: {
-            text: prompt
-        }
-    }
-    const command = new RetrieveCommand(params as RetrieveCommandInput);
-    return bedrockAgentClient.send(command);
-
-}
-
-function getLLMResponse(prompt: string, maxTokens: number=100, model: string='anthropic.claude-v2'){
-    const params = {
-        body: JSON.stringify({ 
-            prompt,
-            max_tokens_to_sample: maxTokens,
-        }),
-        contentType: 'application/json',
-        accept: 'application/json',
-        modelId: model
-    }
-    const command = new InvokeModelCommand(params);
-    return bedrockClient.send(command);
-}
-
-function parseLLMResponse(resp: InvokeModelCommandOutput){
-    return JSON.parse(new TextDecoder('utf-8').decode(resp.body))['completion']
 }
 
 export default async function generateResponse(misinformationText: string, responseMessageType: string) {
