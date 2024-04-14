@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface UserProfile {
   name: string;
@@ -53,6 +54,7 @@ const ProfilePage: React.FC = () => {
         </label>
         <br />
         <button type="submit">Save</button>
+        <Link to="/admin">Admin Page</Link>
       </form>
     </div>
   );
