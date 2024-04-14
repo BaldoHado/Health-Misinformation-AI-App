@@ -132,8 +132,7 @@ const IssueBox = ({ issues }: IssueBoxProps) => {
             />
           </div>
           <div className={styles.lowerText}>
-            <div className={styles.date}>{issueVotes[index]}</div>
-            <div className={styles.severity}>Severity: {issue.severity}</div>
+            <div className={styles.date}>Current Vote Standing: {issueVotes[index]}</div>
           </div>
         </div>
       ))}

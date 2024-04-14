@@ -22,6 +22,8 @@ const PromptAI = () => {
   const [inputText, setInputText] = useState("");
   const [docType, setDocType] = useState<"tweet" | "pr">("tweet");
   const [data, setData] = useState<string>("");
+  const [openSource, setOpenSource] = useState<boolean>(false);
+  const [citations, setCitations] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -36,6 +38,7 @@ const PromptAI = () => {
       try {
         setIsSubmitted(false);
         setIsLoading(true);
+        setOpenSource(false);
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/generate?text=${inputText}&docType=${docType}`
         );
@@ -43,9 +46,18 @@ const PromptAI = () => {
           `${process.env.REACT_APP_API_URL}/summarize?misinformation=${inputText}`
         );
         setData(response.data.output.text);
+        const references = response.data["citations"][0]["retrievedReferences"];
+        var allCitations = "";
+        references.forEach(function (reference: {
+          [x: string]: { [x: string]: any };
+        }) {
+          allCitations += reference["content"]["text"];
+        });
+        setCitations(allCitations);
+
         setMisSummary(response2.data.summary);
         setIsLoading(false);
-        console.log(response)
+        console.log(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -112,6 +124,12 @@ const PromptAI = () => {
             </button>
           )}
         </div>
+        <p>
+            Insert a piece of known misinformation above. Prompt AI will create
+            a suggested response <br />
+            to the message, and as a health professional, you will edit or
+            confirm the contents of the message.
+          </p>
         <div className={styles.generatedText}>
           {isLoading && <LinearProgress color="error" />}
           {!isLoading && data && !isSubmitted && (
@@ -129,6 +147,18 @@ const PromptAI = () => {
                   {data}
                 </div>
               </div>
+              <div className={styles.openSource}>
+                <div
+                  onClick={() => setOpenSource(!openSource)}
+                  className={styles.showSource}
+                >
+                  {openSource && <h3>Click to Hide Sources</h3>}
+                  {!openSource && <h3>Click to Show Sources</h3>}
+                </div>
+                {openSource && (
+                  <div className={styles.genResponse}>{citations}</div>
+                )}
+              </div>
               <div className={styles.editIcon}>
                 {isEditing && <p>Editing</p>}
                 <EditIcon
@@ -145,7 +175,9 @@ const PromptAI = () => {
           )}
           {isSubmitted && (
             <>
-              <h3>Submitted!</h3>
+              <p className={styles.submitMessage}>
+                Your response to misinformation has been submitted.
+              </p>
             </>
           )}
         </div>

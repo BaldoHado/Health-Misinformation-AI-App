@@ -12,6 +12,7 @@
 }
 
 .inputContainer {
+  margin-top: 20px;
   & > * {
     margin-left: 40px;
     margin-right: 40px;
@@ -208,4 +209,22 @@
     transform: scale(1.02);
     box-shadow: 2px 2px 0px 0px #8d9235;
   }
+}
+
+.openSource {
+  margin-top: 20px;
+}
+
+.showSource {
+  margin-bottom: 20px;
+  font-weight: 300;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.submitMessage {
+  font-weight: 600;
+  text-align: center;
+  color: rgb(17, 202, 17);
 }
