@@ -33,7 +33,7 @@ const PromptAI = () => {
   const fetchData = async () => {
     if (inputText && docType) {
       try {
-        setIsSubmitted(false)
+        setIsSubmitted(false);
         setIsLoading(true);
         const response = await axios.get(
           `http://localhost:8000/v1/generate?text=${inputText}&docType=${docType}`
