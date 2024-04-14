@@ -4,6 +4,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 const AdminPortal: React.FC = () => {
   const [keys, setKeys] = useState<string[]>([]);
+  const [usedKeys, setUsedKeys] = useState<string[]>([]); // State to track used keys
 
   const generateKey = (): string => {
     let newKey: string;
@@ -53,6 +54,7 @@ const AdminPortal: React.FC = () => {
           <tr>
             <th className="text-left">Key</th>
             <th className="text-center">Time Remaining</th>
+            <th className="text-center">Status</th>
             <th className="text-center">Action</th>
           </tr>
         </thead>
@@ -65,6 +67,10 @@ const AdminPortal: React.FC = () => {
                   expirationTime={12 * 60 * 60 * 1000}
                   onExpiration={() => handleKeyExpiration(key)}
                 />
+              </td>
+              <td className={styles.textCenter}>
+                {usedKeys.includes(key) ? "Used" : "Unused"}{" "}
+                {/* Display status */}
               </td>
               <td className={styles.textCenter}>
                 <button
