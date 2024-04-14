@@ -1,6 +1,7 @@
 import styles from './SignIn.module.scss';
 import React, { useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 interface signInProps {
 	setCreateAccountOpen?: (e: boolean) => void;
@@ -16,6 +17,10 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 	});
 	const [signInErr, setSignInErr] = useState<boolean>(false);
 
+	// get redirect url from query params
+	const urlParams = new URLSearchParams(window.location.search);
+	const redirect = urlParams.get('redirect') || '/';
+
 	const handleUpdate = (e: any) => {
 		const { name, value } = e.target;
 		setSignInData((prev) => ({
@@ -24,31 +29,35 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 		}));
 	};
 
-	const handleSubmit = async (e: any) => {
+	const login = async (e: any) => {
 		e.preventDefault();
 		try {
-			const response = await axios.get('http://localhost:8000/users', {
-				params: signInData,
+			const loginResp = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ email: signInData.username, pass: signInData.password }),
 			});
-			if (response.status === 200) {
-				setSignInErr(false);
+			if (loginResp.status === 200) {
+				const { token } = await loginResp.json();
+				console.log(token);
+				Cookies.set("token", token);
+				window.location.href = redirect;
 			}
-		} catch (err: any) {
-			console.error('err', err);
-			if (err.response.status === 404) {
-				setSignInErr(true);
-			}
+			return false;
+		} catch (e) {
+			return false;
 		}
-		setSignInData({ username: '', password: '' });
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={login}>
 			<div className={styles.body}>
 				<div className={styles.username}>
 					<p>Username</p>
 					<input
-						placeholder="Enter username"
+						placeholder="Enter email"
 						onChange={handleUpdate}
 						type="text"
 						name="username"
@@ -67,7 +76,7 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 				</div>
 				{signInErr && (
 					<p className={styles.signInErr}>
-						Your username or password is incorrect. Please try again.
+						Your email or password is incorrect. Please try again.
 					</p>
 				)}
 				<button className={styles.button} type="submit">
