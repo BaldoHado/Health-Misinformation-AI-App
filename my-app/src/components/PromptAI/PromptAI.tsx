@@ -45,6 +45,7 @@ const PromptAI = () => {
         setData(response.data.output.text);
         setMisSummary(response2.data.summary);
         setIsLoading(false);
+        console.log(response)
       } catch (error) {
         console.error("Error fetching data:", error);
       }

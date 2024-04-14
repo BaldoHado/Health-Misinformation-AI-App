@@ -1,0 +1,47 @@
+.body {
+	padding: 12px 42px;
+
+	& > p {
+		font-size: 16px;
+	}
+
+	a {
+		text-decoration: underline;
+		color: blue;
+		cursor: pointer;
+	}
+}
+
+.username,
+.password {
+	font-size: 18px;
+	input {
+		background-color: #e4e4e4;
+		border-radius: 6px;
+		padding-left: 12px;
+		border: 2px #838383 solid;
+		width: 100%;
+		height: 36px;
+	}
+}
+
+.button {
+	background-color: #6a4b4b;
+	border-radius: 6px;
+	color: #ffffff;
+	width: 100px;
+	height: 40px;
+	margin-top: 36px;
+	margin-bottom: 12px;
+
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.signInErr {
+	color: red;
+	position: absolute;
+	padding: 12px 0px;
+	margin: 0;
+}

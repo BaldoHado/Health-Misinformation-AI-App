@@ -13,7 +13,7 @@ const Header = () => {
           <Link to="/prompt-ai">Prompt AI</Link>
         </div>
         <div className={styles.navBtn}>
-          <Link to="/profile">Profile</Link>
+          <Link to="/signin">Sign In</Link>
         </div>
       </div>
     </nav>
