@@ -1,11 +1,17 @@
-const koa = require( 'koa' );
-const serve = require( 'koa-static' );
-const http = require( 'http' );
-const app = new koa();
-const httpPort = process.env.PORT || 6222;
+const express = require('express');
+const path = require('path');
+const app = express();
+const port = process.env.PORT || 6222;
 
-app.use( serve( __dirname + '/build', {
-    maxage: 365 * 24 * 60 * 60
-} ) );
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'build')));
 
-http.createServer( app.callback() ).listen( httpPort, () => console.log( `server is listening on ${httpPort}` ) );
+// Serve index.html for all routes that are not found
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
+});
