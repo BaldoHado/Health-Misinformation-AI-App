@@ -10,17 +10,19 @@
   margin-top: 50px;
   height: 100%;
 }
+
 .inputContainer {
-  & > * {
+  &>* {
     margin-left: 40px;
     margin-right: 40px;
   }
+
   position: relative;
 }
 
 .inputs {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  place-items: center;
 }
 
 .inputField {
@@ -30,10 +32,10 @@
   padding-left: 20px;
   padding-right: 20px;
   border: none !important;
-  background-color: #B39A9A;
+  background-color: #ded563;
   outline: none;
   min-width: 280px;
-  box-shadow: 0px 3px 3px 3px #877272;
+  box-shadow: 0px 3px 3px 3px #8d9235;
   line-height: 24px;
   font-weight: 300;
   font-family: 'Poppins', sans-serif;
@@ -50,7 +52,6 @@
   &:focus {
     text-align: left;
     outline: none !important;
-    min-width: 450px;
     padding-left: 20px;
     padding-right: 20px;
     transition: all 0.3s ease;
@@ -69,4 +70,13 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.generatedText {
+  width: 75%;
+
+  &>* {
+    text-align: left;
+  }
+
 }

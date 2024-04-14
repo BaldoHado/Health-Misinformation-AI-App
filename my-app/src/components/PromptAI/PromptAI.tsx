@@ -3,6 +3,7 @@ import styles from "./PromptAI.module.scss";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import axios from "axios";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import PendingIcon from '@mui/icons-material/Pending';
 
 const PromptAI: React.FC = () => {
   const [inputText, setInputText] = useState("");
@@ -17,11 +18,12 @@ const PromptAI: React.FC = () => {
   const fetchData = async () => {
     if (inputText) {
       try {
+        setIsLoading(true);
         const response = await axios.get(
           `http://localhost:8000/v1/generate?text=${inputText}&docType=${docType}`
         );
         setData(response.data.output.text);
-        console.log(response.data);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -40,11 +42,10 @@ const PromptAI: React.FC = () => {
             placeholder="Known Misinformation Here..."
             className={styles.inputField}
           />
-          <ArrowForwardIosIcon
+          {!isLoading ? <ArrowForwardIosIcon
             className={styles.submitIcon}
             onClick={fetchData}
-          />
-          {/* onClick={fetchData} */}
+          /> : <PendingIcon className={styles.submitIcon}/>}
         </div>
 
         {/* <FormControl sx={{ minWidth: 200 }}>
@@ -62,7 +63,15 @@ const PromptAI: React.FC = () => {
             <MenuItem value="pr">Press Release</MenuItem>
           </Select>
         </FormControl> */}
-        <p>{data}</p>
+        <div className={styles.generatedText}>
+          {isLoading && <p> Loading</p>}
+          {!isLoading && data && (
+            <>
+              <h3>Optimal AI-Generated Response</h3>
+              <p>{data}</p>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
