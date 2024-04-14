@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import mongoose, { Schema, Document, Model } from "mongoose";
-import generateResponse from './services/bedrock/response-gen';
+import generateResponse from "./services/bedrock/response-gen";
 import cors from "cors";
 import generateSummarization from "./services/bedrock/summarization";
 
@@ -41,7 +41,7 @@ const issueSchema: Schema = new Schema({
   date: { type: Date, default: Date.now },
   region: [{ type: String }],
   demographic: [{ type: String }],
-  popularity: { type: Number, },
+  popularity: { type: Number },
   severity: { type: Number },
   generatedText: { type: String, required: true },
   status: {
@@ -58,8 +58,8 @@ const IssueModel: Model<Issue> = mongoose.model<Issue>("Issue", issueSchema);
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Welcome to Express & TypeScript Server'); 
+app.get("/", (req: Request, res: Response) => {
+  res.send("Welcome to Express & TypeScript Server");
 });
 
 app.get("/v1/generate", async (req: Request, res: Response) => {
@@ -67,18 +67,30 @@ app.get("/v1/generate", async (req: Request, res: Response) => {
     const { text, docType } = req.query;
 
     if (!text || !docType) {
-      return res.status(400).json({ error: 'Text and doctype are required.' });
+      return res.status(400).json({ error: "Text and doctype are required." });
     }
     if (docType != "tweet" && docType != "pr") {
-      return res.status(400).json({ error: 'DocType must be of type tweet or press release' });
+      return res
+        .status(400)
+        .json({ error: "DocType must be of type tweet or press release" });
     }
 
     const response = await generateResponse(text as string, docType as string);
 
     res.json(response);
   } catch (error) {
-    console.error('Error generating response:', error);
-    res.status(500).json({ error: 'Internal server error.' });
+    console.error("Error generating response:", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+});
+
+app.get("/v1/summarize", async (req: Request, res: Response) => {
+  try {
+    const misinfo = req.query.misinformation;
+    const resp = await generateSummarization(misinfo as string);
+    res.send({ summary: resp });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -152,24 +164,19 @@ app.delete("/v1/issues/:id", async (req: Request, res: Response) => {
 // POST /v1/issues/:id/vote - Vote on a specific issue
 app.post("/v1/issues/:id/vote", async (req: Request, res: Response) => {
   try {
+    const { add } = req.query;
     const issue = await IssueModel.findById(req.params.id);
     if (issue) {
-      issue.votes += 1; // Increment votes
+      if (add) {
+        issue.votes += 1; // Increment votes
+      } else {
+        issue.votes -= 1;
+      }
       await issue.save();
       res.json(issue);
     } else {
       res.status(404).send("Issue not found");
     }
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.get("/v1/summarize", async (req: Request, res: Response) => {
-  try {
-    const misinfo = req.query.misinformation;
-    const resp = await generateSummarization(misinfo as string);
-    res.send({"summary": resp});
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

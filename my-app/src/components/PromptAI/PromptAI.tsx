@@ -25,6 +25,7 @@ const PromptAI = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [misSummary, setMisSummary] = useState<string>("");
 
   const handleInputChange = (event: any) => {
     setInputText(event.target.value);
@@ -38,8 +39,11 @@ const PromptAI = () => {
         const response = await axios.get(
           `http://localhost:8000/v1/generate?text=${inputText}&docType=${docType}`
         );
+        const response2 = await axios.get(
+          `http://localhost:8000/v1/summarize?misinformation=${inputText}`
+        );
         setData(response.data.output.text);
-        console.log(response.data);
+        setMisSummary(response2.data.summary);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -58,7 +62,7 @@ const PromptAI = () => {
     e.preventDefault();
     try {
       const toSub: submitSchema = {
-        summary: inputText,
+        summary: misSummary,
         generatedText: data,
         votes: 120,
       };
