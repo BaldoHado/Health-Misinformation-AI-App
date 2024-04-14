@@ -7,6 +7,8 @@
 }
 
 .container {
+  height: 200px;
+  position: relative;
   margin-top: 50px;
 }
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
@@ -19,12 +21,38 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-button {
-  background-color: #d1d1d1;
-  font-size: 16px;
-  font-weight: 400;
-  flex-direction: center;
-  text-align: center;
+.sbutton {
+  top: 16px;
+  right: 15px;
+  min-width: 35px;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.gbutton {
+  background-color: #9ea7af;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  margin-top: 2.5%;
+  transition: background-color 0.3s ease;
+  padding: 15px 25px;
+  border: none;
+  cursor: pointer;
+}
+
+.gbutton:hover {
+  background-color: #fff6a2;
+}
+
+.centers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 div.tabletitle {
@@ -49,7 +77,6 @@ div.tabletitle {
   background: #fff6a2;
   border-radius: 3px;
   border-collapse: collapse;
-  height: 320px;
   margin: auto;
   max-width: 600px;
   padding: 5px;
@@ -87,7 +114,7 @@ th:last-child {
 tr {
   border-top: 1px solid #c1c3d1;
   border-bottom: 1px solid #c1c3d1;
-  color: #666b85;
+  color: #36373b;
   font-size: 16px;
   font-weight: normal;
   text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);

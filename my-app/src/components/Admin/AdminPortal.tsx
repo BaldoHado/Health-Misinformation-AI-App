@@ -74,7 +74,7 @@ const AdminPortal: React.FC = () => {
               </td>
               <td className={styles.textCenter}>
                 <button
-                  className={styles.textCenter}
+                  className={styles.sbutton}
                   onClick={() => deleteKey(key)}
                 >
                   <CancelIcon />
@@ -84,9 +84,11 @@ const AdminPortal: React.FC = () => {
           ))}
         </tbody>
       </table>
-      <button className={styles.textCenter} onClick={addKey}>
-        Generate Key
-      </button>
+      <div className={styles.centers}>
+        <button className={styles.gbutton} onClick={addKey}>
+          <b>Generate Key</b>
+        </button>
+      </div>
     </div>
   );
 };
