@@ -9,6 +9,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { createUser, findUserByEmail } from "./schemas/User";
 
+dotenv.config();
+
 mongoose
   .connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
@@ -19,8 +21,6 @@ mongoose
   )
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
-
-dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 8000;
@@ -165,7 +165,7 @@ app.post("/v1/auth/login", async (req, res) => {
 			if (bcrypt.compareSync(pass, user.hash)) {
 				const token = jwt.sign(
 					{ userId: user._id, expiration: currentUnixTimeInSeconds + 3600 },
-					process.env.JWT_SECRET_KEY
+					process.env.JWT_SECRET_KEY || "bad_secret"
 				);
 				res.send({ token: token });
 			} else {
@@ -178,9 +178,8 @@ app.post("/v1/auth/login", async (req, res) => {
 	}
 });
 
-app.post("/auth/register", async (req, res) => {
+app.post("/v1/auth/register", async (req, res) => {
 	try {
-		console.log(req.body);
 		const hen = await createUser(req.body.firstName, req.body.lastName, req.body.email, req.body.pass, req.body.tokenRegisteredWith);
 		res.status(201).send(hen);
 	} catch (e) {
@@ -189,10 +188,10 @@ app.post("/auth/register", async (req, res) => {
 	}
 });
 
-app.get("/auth/check", async (req, res) => {
-	const token = req.headers.authorization.split(" ")[1];
+app.get("/v1/auth/check", async (req, res) => {
 	try {
-		const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const token = req.headers.authorization?.split(" ")[1] || "";
+		const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY || "bad_secret") as any;
 		if (decoded.expiration < Math.floor(Date.now() / 1000)) {
 			res.status(401).send({ error: "token expired" });
 		} else {

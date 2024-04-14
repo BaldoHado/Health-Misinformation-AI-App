@@ -6,15 +6,16 @@ import PromptAIPage from "./pages/PromptAIPage";
 import SignIn from "./pages/SignInPage";
 import Admin from "./pages/AdminPortalPage";
 import SignUp from "./pages/SignUpPage";
+import ProtectedPage from "./components/ProtectedPage";
 
 function App() {
   return (
     <HashRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/prompt-ai" element={<PromptAIPage />} />
+        <Route path="/prompt-ai" element={<ProtectedPage><PromptAIPage /></ProtectedPage>} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin" element={<ProtectedPage><Admin /></ProtectedPage>} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
     </HashRouter>

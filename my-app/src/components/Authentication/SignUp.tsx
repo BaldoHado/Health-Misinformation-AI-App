@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import styles from "./SignUp.module.scss";
 
 interface FormData {
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  password: string;
+  pass: string;
+  tokenRegisteredWith: string;
 }
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    username: "",
+    firstName: "",
+    lastName: "",
     email: "",
-    password: "",
+    pass: "",
+    tokenRegisteredWith: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,10 +23,15 @@ const SignUp: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // You can handle form submission here, e.g., send data to server
-    console.log(formData);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
   };
 
   return (
@@ -30,23 +39,23 @@ const SignUp: React.FC = () => {
       <h2>Sign Up</h2>
       <form className="signup-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="first-name">First Name</label>
+          <label htmlFor="firstName">First Name</label>
           <input
             type="text"
-            id="first-name"
-            name="first-name"
-            value={formData.username}
+            id="firstName"
+            name="firstName"
+            value={formData.firstName}
             onChange={handleChange}
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="last-name">Last Name</label>
+          <label htmlFor="lastName">Last Name</label>
           <input
             type="text"
-            id="lasr-name"
-            name="lasr-name"
-            value={formData.username}
+            id="lastName"
+            name="lastName"
+            value={formData.lastName}
             onChange={handleChange}
             required
           />
@@ -63,23 +72,23 @@ const SignUp: React.FC = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="pass">Password</label>
           <input
             type="password"
-            id="password"
-            name="password"
-            value={formData.password}
+            id="pass"
+            name="pass"
+            value={formData.pass}
             onChange={handleChange}
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="key">Access Key</label>
+          <label htmlFor="tokenRegisteredWith">Access Key</label>
           <input
             type="text"
-            id="key"
-            name="key"
-            value={formData.username}
+            id="tokenRegisteredWith"
+            name="tokenRegisteredWith"
+            value={formData.tokenRegisteredWith}
             onChange={handleChange}
             required
           />

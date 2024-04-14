@@ -15,6 +15,6 @@ const issueSchema = new mongoose.Schema({
         enum: ["Open", "Closed", "In Progress"],
     },
     votes: { type: Number, default: 0 },
-});
+}, { collection: "issues", timestamps: true });
 
 export default mongoose.model("Issue", issueSchema);
